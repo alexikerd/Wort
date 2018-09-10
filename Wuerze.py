@@ -19,7 +19,7 @@ if path.exists(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name))):
 	if Repeat_Name == "y":
 		os.remove(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name)))
 
-#This should be very straightforward so far, but all I'm doing is setting up a folder to store my recipes and making sure I don't have duplicate names
+#This should be very straightforward so far, but all I'm doing is setting up a folder to store my recipes and making sure I don't have duplicate names.
 
 
 
@@ -30,7 +30,7 @@ e = create_engine('sqlite:///Wuerze.db')
 conn = e.connect()
 cur = conn.connection.cursor()
 
-#I'm setting up individual files for malt and hops that will be useful later as well as getting the database started
+#I'm setting up individual files for malt and hops that will be useful later as well as getting the database started.
 
 
 
@@ -48,7 +48,7 @@ hdata = np.genfromtxt('Hop.txt', delimiter=None, dtype=hdt, usecols=(0,1))
 hopdata = np.column_stack((hdata['Hop'], hdata['AA']))
 cur.executemany("INSERT INTO hop VALUES (?,?)", hopdata)
 
-#Here I created two tables within the database of Wuerze, one for every malt and one for every hop.  I can then pull from this database for specific recipe calculations
+#Here I created two tables within the database of Wuerze, one for every malt and one for every hop.  I can then pull from this database for specific recipe calculations.
 
 
 
@@ -75,14 +75,14 @@ h.close()
 
 cur.close()
 
-#The files created earlier are populated with important information from the user involving the recipe as well as the relevant information for each ingredient in a usable format.  The database then is closed since it is no longer needed
+#The files created earlier are populated with important information from the user involving the recipe as well as the relevant information for each ingredient in a usable format.  The database then is closed since it is no longer needed.
 
 
 
 mdt2 = np.dtype([('Malt', 'U32'), ('PPG', 'f8'), ('Lovibond', 'f8'), ('Weight', 'f8')])
 mdata2 = np.genfromtxt("{}.txt".format(Recipe_Name + "m"), delimiter=None, dtype=mdt2, usecols=(0,1,2,3))
 maltydata  = np.column_stack((mdata2['Malt'], mdata2['PPG'], mdata2['Lovibond'], mdata2['Weight']))
-#I begin with using the malt information as its calculations have an impact on the hop calculations.  I reformatted everything to make it much easier to handle
+#I begin with using the malt information as its calculations have an impact on the hop calculations.  I reformatted everything to make it much easier to handle.
 
 
 
@@ -111,17 +111,16 @@ boildata  = np.column_stack((bdata['Capacity_Volume'], 3.78541 * (bdata['Boil_Vo
 boilstats = sp.stats.linregress(boildata[:,2], boildata[:,1])
 Capacity = float(input("What's the volume capacity of the pot you'll be using to boil?  "))
 brewdata = boildata[np.logical_not(boildata[:,0] != Capacity)]
-Volume_Boiled = (boilstats[0] * Original_Gravity + boilstats[1]) * brewdata[0,3] / 3.78541 
+Volume_Boiled = (boilstats[0] * Original_Gravity + boilstats[1]) * brewdata[0,3] * (Boil_Time/60) / 3.78541 
 Sparge_Volume = Batch_Volume + Volume_Boiled - Strike_Volume + Volume_Absorbed
 Volume_Preboil = Batch_Volume + Volume_Boiled
 Initial_Gravity = 1 + Plato/(1000 * Volume_Preboil)
 
-#There are a lot of small factors when it comes to boiling away water that are specific to each homebrewers set up.  In order to make these small factors into a constant I need to extract all other possible
-#variables that have a bigger and realistically measured impact.  That is, there is a linear relationship between volume boiled away and temperature, surface area, enthalpy of vaporization, and time boiled.
-#I conducted experiments by boiling water for 60 minutes which is the standard boiling time for brewing.  Water has a known enthalpy of vaporization and temperature at which it boils.  I used 3 different pots
-#to test the volume boiled's reliance on radius squared and found the linear regression.  The linear regression divided by enthalpy, temperature, and time will equal the desired system constant.  After then
-#including wort stats and changing the enthalpy constant to be unknown, I was able to solve for the wort enthalpy constant.  Going back to the beginning, I was able to use this information to determine how
-#much wort would get boiled away.
+#There are many small factors that affect the boil off rate that are specific to each brewing setup.  These are too small to realistically measure and determine, but they will be the same
+#each time I brew as it is the same set up.  The boil off rate is proportional to the surface area of the pot, temperature, and enthalpy of vaporization of the wort.  I've conducted some experiments
+#involving boiling for 60 min that I put into a text file 'Boil_Experiment' that I will continue to add to each time that I brew.  Dividing the change in volume by the radius of the pot squared
+#will allow me to determine the relationship between enthalpy of vaporization and volume change as temperature will be constant (or close enough to not impact the results).  The enthalpy of
+#vaporization iself is a linear function gravity.  Therefore, I can experimentally determine the volume boiled off in a way that gets more accurate each time I brew.
 
 
 
@@ -173,4 +172,4 @@ f.close()
 os.remove("{}.txt".format(Recipe_Name + "m"))
 os.remove("{}.txt".format(Recipe_Name + "h"))
 
-#Also relatively straightforward, I write out the recipe into a very readable format and get rid of the two assistant text files required for calculations
+#Also relatively straightforward, I write out the recipe into a very readable format and get rid of the two assistant text files required for calculations.

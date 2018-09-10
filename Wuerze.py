@@ -1,71 +1,176 @@
-#from sqlalchemy import create_engine
-#import os
+from sqlalchemy import *
 import numpy as np
+import scipy as sp
+import pandas as pd
+from scipy import stats
+import math as math
+import os
+from os import path
 
-#mdt = np.dtype([('Malt', 'U32'), ('Country', 'U16'), ('Grain', 'U5'), ('Malt_Type', 'U16'), ('PPG', 'i4'), ('Lovibond', 'i4'), ('#_of_Recipes','i4')])
-mdt = np.dtype([('Malt', 'U32'), ('PPG', 'i4'), ('Lovibond', 'i4')])
 
-mdata = np.genfromtxt('Malt.txt', delimiter=None, dtype=mdt, usecols=(0,4,5))
 
-hdt = np.dtype([('Hop', 'U32'), ('AA', 'f8')])
+Beer_Recipes_Path = r'C:\Users\alexi\Desktop\Wuerze\Beer_Recipes'
+Recipe_Name = input("Hi, welcome to Wuerze.  What would you like to name your beer recipe?  ")
+if path.exists(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name))):
+	Repeat_Name = input("I'm sorry, you already have a beer recipe with this name, would you like to overwrite it (y or n)?  ")
+	if Repeat_Name == "n":
+		print('Ok, well try again')
+		exit()
+	if Repeat_Name == "y":
+		os.remove(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name)))
 
-hdata = np.genfromtxt('Hop.txt', delimiter=None, dtype=hdt, usecols=(0,1))
+#This should be very straightforward so far, but all I'm doing is setting up a folder to store my recipes and making sure I don't have duplicate names
 
-#print(sum(mdata['Lovibond']))
-#print(mdata["PPG"]*2)
-#print(sum(mdata['PPG']*mdata['Lovibond']))
-#print(mdata[3]['Malt'])
-#print(mdata['Amber'][:])isn't working?
 
-Batch_Volume = input("Hi, welcome to Wuerze.  What size batch are you wanting to make?  ")
-print("So it's a", Batch_Volume, "gallon batch")
-type(Batch_Volume)
 
-#So, the volume lost due to boiling is relatively difficult to accurately calculate as it relies on properties of the wort and
-#the radius of the pot.  Later I'm going to go back to determine experimentally this equation but until then I'm going to use the
-#typical estimate that I've seemed to notice when I've brewed which is ~1 gallon per hour 
-
-#Strike volume is dependent on the total weight of grain since we want an optimal density in order to break down the starches
-
-#Volume absorbed is going to have to be calculated experimentally but I'm pretty sure that this will be fairly accurate
-#to the given value of 0.125*(total weight of grain) as there are not nearly as much hidden factors here
-
-Recipe_Name = input("What would you like to name your beer recipe?  ")
-f= open("{}.txt".format(Recipe_Name),"w+")
+f= open(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name)),"w+")
 m= open("{}.txt".format(Recipe_Name + "m"),"w+")
 h= open("{}.txt".format(Recipe_Name + "h"),"w+")
+e = create_engine('sqlite:///Wuerze.db')
+conn = e.connect()
+cur = conn.connection.cursor()
 
-Recipe_Malt = input("What malt would you like to add?  ")
-Recipe_Malt_Amount = input("And how much of " + Recipe_Malt + " do you want to use?  ")
-malt_generator = (item for item in mdata if item[0] == Recipe_Malt)
-malt_props = list(malt_generator)[0]
-m.write('{}	{}	{}	{}'.format(*malt_props, Recipe_Malt_Amount))
+#I'm setting up individual files for malt and hops that will be useful later as well as getting the database started
 
 
-Malt_Finisher = input("Do you want to add any more malt (y or n)?  ")
-while (Malt_Finisher == "y"):
+
+cur.execute('''DROP TABLE IF EXISTS malt''')
+cur.execute('''CREATE TABLE malt (Malt text, PPG real, Lovibond real)''')
+mdt = np.dtype([('Malt', 'U32'), ('Lovibond', 'f8'), ('PPG', 'f8')])
+mdata = np.genfromtxt('Malt.txt', delimiter=None, dtype=mdt, usecols=(0,4,5))
+maltdata  = np.column_stack((mdata['Malt'], mdata['PPG'] , mdata['Lovibond']))
+cur.executemany("INSERT INTO malt VALUES (?,?,?)", maltdata)
+
+cur.execute('''DROP TABLE IF EXISTS hop''')
+cur.execute('''CREATE TABLE hop (Hop text, AA real)''')
+hdt = np.dtype([('Hop', 'U32'), ('AA', 'f8')])
+hdata = np.genfromtxt('Hop.txt', delimiter=None, dtype=hdt, usecols=(0,1))
+hopdata = np.column_stack((hdata['Hop'], hdata['AA']))
+cur.executemany("INSERT INTO hop VALUES (?,?)", hopdata)
+
+#Here I created two tables within the database of Wuerze, one for every malt and one for every hop.  I can then pull from this database for specific recipe calculations
+
+
+
+Malt_Finisher = 'y'
+while (Malt_Finisher == 'y'):
 	Recipe_Malt = input("What malt would you like to add?  ")
-	Recipe_Malt_Amount = input("And how much of " + Recipe_Malt + " do you want to use?  ")
-	malt_generator = (item for item in mdata if item[0] == Recipe_Malt)
-	malt_props = list(malt_generator)[0]
-	m.write('\n{}	{}	{}	{}'.format(*malt_props, Recipe_Malt_Amount))
+	Recipe_Malt_Amount = input("And how many pounds of " + Recipe_Malt + " do you want to use?  ")
+	cur.execute('SELECT * FROM malt WHERE Malt = ?', (Recipe_Malt,))
+	for row in cur:
+		m.write('{}	{}	{}	{}\n'.format(row[0], row[1], row[2], Recipe_Malt_Amount))
 	Malt_Finisher = input("Do you want to add any more malt (y or n)?  ")
+m.close()
 
-print("hell yeah")
-
-Recipe_Hop = input("What hops are ya lookin' to add?  ")
-Recipe_Hop_Amount = input("And how many ounces of " + Recipe_Hop + " do you want to add?  ")
-Recipe_Hop_Boil = input("How many minutes will " + Recipe_Hop + " boil for?  ")
-hop_generator = (item for item in hdata if item[0] == Recipe_Hop)
-hop_props = list(hop_generator)[0]
-h.write('{}	{}	{}	{}'.format(*hop_props, Recipe_Hop_Amount, Recipe_Hop_Boil))
-
-Hop_Finisher = input("Do you want to add any more hops (y or n)?  ")
-while (Hop_Finisher == "y"):
+Hop_Finisher = 'y'
+while (Hop_Finisher == 'y'):
 	Recipe_Hop = input("What hop would you like to add?  ")
-	Recipe_Hop_Amount = input("And how much of " + Recipe_Hop + " do you want to use?  ")
-	Recipe_Hop_Boil = input("How many minutes will " + Recipe_Hop + " boil for?  ")
-	hop_generator = (item for item in mdata if item[0] == Recipe_Hop)
-	hop_props = list(hop_generator)[0]
-	h.write('\n{}	{}	{}	{}'.format(*hop_props, Recipe_Hop_Amount, Recipe_Hop_Boil))
+	Recipe_Hop_Amount = input("And how many ounces of " + Recipe_Hop + " do you want to use?  ")
+	Recipe_Hop_Boil = input("How many minutes will you boil " + Recipe_Hop + " for?  ")
+	cur.execute('SELECT * FROM hop WHERE Hop = ?', (Recipe_Hop,))
+	for row in cur:
+		h.write('{}	{}	{}	{}\n'.format(row[0], row[1], Recipe_Hop_Amount, Recipe_Hop_Boil))
 	Hop_Finisher = input("Do you want to add any more hops (y or n)?  ")
+h.close()
+
+cur.close()
+
+#The files created earlier are populated with important information from the user involving the recipe as well as the relevant information for each ingredient in a usable format.  The database then is closed since it is no longer needed
+
+
+
+mdt2 = np.dtype([('Malt', 'U32'), ('PPG', 'f8'), ('Lovibond', 'f8'), ('Weight', 'f8')])
+mdata2 = np.genfromtxt("{}.txt".format(Recipe_Name + "m"), delimiter=None, dtype=mdt2, usecols=(0,1,2,3))
+maltydata  = np.column_stack((mdata2['Malt'], mdata2['PPG'], mdata2['Lovibond'], mdata2['Weight']))
+#I begin with using the malt information as its calculations have an impact on the hop calculations.  I reformatted everything to make it much easier to handle
+
+
+
+Batch_Volume = input("How many gallons will your batch be?  ")
+Batch_Volume = float(Batch_Volume)
+Plato = sum(mdata2['PPG']*mdata2['Weight'])
+SRM = 1.4922*((sum(mdata2['Weight']*mdata2['Lovibond'])/Batch_Volume)**0.6859)
+Strike_Volume = 0.3125*(sum(mdata2['Weight']))
+Volume_Absorbed = 0.125*(sum(mdata2['Weight']))
+Original_Gravity = 1 + Plato/(1000 * Batch_Volume)
+
+#There are three imporant parts of the malt calculations.  There are volume calculations (of which there are2 very important ones), the gravity, and color.  Gravity is much more easily tracked with
+#the value 'Plato' as the actual specific gravity changes along with the volume (just look at the formula for Original_Gravity).  Essentially as water boils away the actual particles/sugar of the wort
+#that came from the malt do not boil away, so the total amount remains constant.  Color, or SRM is the exact same way.  Volume calculations are significantly more difficult as volume is lost through
+#a number of processes.  We have the initial amount of water that the malt is added to (Strike Volume), grain absorbs some of this away but we then pour more water through the grain to increase mash
+#efficiency (Sparge Volume).  Wort is then boiled away and what remains needs to be the desired batch volume.  Volume lost due to absorption can be calculated by pure weight of the grain.  This is a
+#good enough estimate as barley behaves as barley for the most part and finding a very accurate method accounting for how dry the barley is would be incredibly tedious.  So I will stick with an estimate
+#for volume absorbed.  When it comes to Strike Volume, there is a desired grain to water ratio so simply by knowing how much grain we can find the initial volume.  We know the end volume result and once
+#we know how much will be boiled away we can solve for Sparge Volume.
+
+
+Boil_Time = float(input("How long will the boil last for?  "))
+bdt = np.dtype([('Capacity_Volume', 'f8'), ('Boil_Volume', 'f8'), ('Final_Volume', 'f8'), ('Radius_Squared', 'f8'), ('Gravity', 'f8')])
+bdata = np.genfromtxt('Boil_Experiment.txt', delimiter=None, dtype=bdt, usecols=(0,1,2,3,4), skip_header= 1)
+boildata  = np.column_stack((bdata['Capacity_Volume'], 3.78541 * (bdata['Boil_Volume'] - bdata['Final_Volume']) / bdata['Radius_Squared'], bdata['Gravity'], bdata['Radius_Squared']))
+boilstats = sp.stats.linregress(boildata[:,2], boildata[:,1])
+Capacity = float(input("What's the volume capacity of the pot you'll be using to boil?  "))
+brewdata = boildata[np.logical_not(boildata[:,0] != Capacity)]
+Volume_Boiled = (boilstats[0] * Original_Gravity + boilstats[1]) * brewdata[0,3] / 3.78541 
+Sparge_Volume = Batch_Volume + Volume_Boiled - Strike_Volume + Volume_Absorbed
+Volume_Preboil = Batch_Volume + Volume_Boiled
+Initial_Gravity = 1 + Plato/(1000 * Volume_Preboil)
+
+#There are a lot of small factors when it comes to boiling away water that are specific to each homebrewers set up.  In order to make these small factors into a constant I need to extract all other possible
+#variables that have a bigger and realistically measured impact.  That is, there is a linear relationship between volume boiled away and temperature, surface area, enthalpy of vaporization, and time boiled.
+#I conducted experiments by boiling water for 60 minutes which is the standard boiling time for brewing.  Water has a known enthalpy of vaporization and temperature at which it boils.  I used 3 different pots
+#to test the volume boiled's reliance on radius squared and found the linear regression.  The linear regression divided by enthalpy, temperature, and time will equal the desired system constant.  After then
+#including wort stats and changing the enthalpy constant to be unknown, I was able to solve for the wort enthalpy constant.  Going back to the beginning, I was able to use this information to determine how
+#much wort would get boiled away.
+
+
+
+hdt2 = np.dtype([('Hop', 'U32'), ('AA', 'f8'), ('Weight', 'f8'), ('Boil_Time', 'f8')])
+hdata2 = np.genfromtxt("{}.txt".format(Recipe_Name + "h"), delimiter=None, dtype=hdt2, usecols=(0,1,2,3))
+hoppydata  = np.column_stack((hdata2['AA']/100, hdata2['Weight'] , hdata2['Boil_Time']))
+IBU = sum((1.65 * 0.000125**(Plato/(1000 * Batch_Volume))) * ((1 - np.exp(-0.04 * hoppydata[:,2]))/4.15) * (hoppydata[:,0]*hoppydata[:,1]*7490/(Batch_Volume)))
+
+#hop calculations are significantly easier as all I had to do was determine the IBU using the Tinseth equation.
+
+
+
+f.write('{}		{} gallons\n'.format(Recipe_Name, Batch_Volume))
+f.write('\nOG:	{}\n'.format(Original_Gravity))
+f.write('IBU:	{}\n'.format(IBU))
+if SRM < 2:
+	f.write('Color:	Pale Straw ({})\n'.format(SRM))
+if SRM > 2 and SRM <= 3:
+	f.write('Color:	Straw ({})\n'.format(SRM))
+if SRM > 3 and SRM <= 4:
+	f.write('Color:	Pale Gold ({})\n'.format(SRM))
+if SRM > 4 and SRM <= 6:
+	f.write('Color:	Deep Gold ({})\n'.format(SRM))
+if SRM > 6 and SRM <= 9:
+	f.write('Color:	Pale Amber ({})\n'.format(SRM))
+if SRM > 9 and SRM <= 12:
+	f.write('Color:	Medium Amber ({})\n'.format(SRM))
+if SRM > 12 and SRM <= 15:
+	f.write('Color:	Deep Amber ({})\n'.format(SRM))
+if SRM > 15 and SRM <= 18:
+	f.write('Color:	Amber-Brown ({})\n'.format(SRM))
+if SRM > 18 and SRM <= 20:
+	f.write('Color:	Brown ({})\n'.format(SRM))
+if SRM > 20 and SRM <= 24:
+	f.write('Color:	Ruby Brown ({})\n'.format(SRM))
+if SRM > 24 and SRM <= 30:
+	f.write('Color:	Deep Brown ({})\n'.format(SRM))
+if SRM > 30:
+	f.write('Color:	Black ({})\n'.format(SRM))
+f.write('Strike Volume:	{}\n'.format(Strike_Volume))
+f.write('Sparge Volume:	{}\n'.format(Sparge_Volume))
+f.write('\nMalt				Amount\n')
+for row in maltydata:
+	f.write("{}				{}\n".format(row[0], row[3]))
+f.write('\nHop				Amount				Boil Time')
+for row in hdata2:
+	f.write("\n{}				{}				{}".format(row[0], row[2], row[3]))
+f.close()
+os.remove("{}.txt".format(Recipe_Name + "m"))
+os.remove("{}.txt".format(Recipe_Name + "h"))
+
+#Also relatively straightforward, I write out the recipe into a very readable format and get rid of the two assistant text files required for calculations

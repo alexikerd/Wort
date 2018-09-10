@@ -1,193 +1,382 @@
 Abbey_Malt	German	Grain	Base_malt	17	33	2323
+
 Ale_Malt_(Irish)	Ireland	Grain	Base_malt	3	37	683
+
 Ale_Malt_(New_Zealander)	New_Zealand	Grain	Base_malt	3	37.4	839
+
 Amber	United_Kingdom	Grain	Base_malt	27	32	8798
+
 American_Ale_Malt	New_Zealand	Grain	Base_malt	3	37.3	749
+
 Aromatic_Malt	American	Grain	Base_malt	20	35	8715
+
 Ashbourne_Mild	American	Grain	Base_malt	5	30	755
+
 Aurora_Malt	New_Zealand	Grain	Base_malt	29	37.2	163
+
 Bohemian_Pilsner	German	Grain	Base_malt	2	38	6604
+
 Bonlander_Munich	American	Grain	Base_malt	10	36	2672
+
 Dark_Munich	German	Grain	Base_malt	10	36	6313
+
 Dark_Wheat	German	Grain	Base_malt	7	39	2192
+
 Distillers_Malt	Ireland	Grain	Base_malt	2	37	54
+
 Enzyme_Malt	Finland	Grain	Base_malt	0	35	76
+
 ESB_Malt	Canadian	Grain	Base_malt	4	36	1097
+
 Floor-Malted_Bohemian_Pilsner	German	Grain	Base_malt	2	38	3058
+
 Floor-Malted_Bohemian_Pilsner_Dk	German	Grain	Base_malt	7	38	266
+
 Floor-Malted_Bohemian_Wheat	German	Grain	Base_malt	2	38	531
+
 Gladiator_Malt	New_Zealand	Grain	Base_malt	5	37.3	329
+
 Golden_Promise	United_Kingdom	Grain	Base_malt	3	37	17386
+
 Halcyon	United_Kingdom	Grain	Base_malt	2	36	512
+
 Honey_Malt	Canadian	Grain	Base_malt	25	37	24426
-Kölsch	German	Grain	Base_malt	4	37	759
+
+Kolsch	German	Grain	Base_malt	4	37	759
+
 Lager	United_Kingdom	Grain	Base_malt	1	38	2683
+
 Lager_Light	New_Zealand	Grain	Base_malt	1	37	100
+
 Lager_Malt	Ireland	Grain	Base_malt	2	37	232
+
 Malted_Naked_Oats	United_Kingdom	Grain	Base_malt	1	33	1475
+
 Malted_Rye	New_Zealand	Grain	Base_malt	3	40.2	223
+
 Manuka_Smoked_Malt	New_Zealand	Grain	Base_malt	2	36.8	52
+
 Maris_Otter_Pale	United_Kingdom	Grain	Base_malt	4	38	102656
+
 Mild	United_Kingdom	Grain	Base_malt	3	37	1032
+
 Munich_(Belgian)	Belgian	Grain	Base_malt	6	38	12653
+
 Munich_(British)	United_Kingdom	Grain	Base_malt	6	37	9149
+
 Munich_60L	American	Grain	Base_malt	60	33	3899
+
 Munich_Dark_20L	American	Grain	Base_malt	20	33	8033
+
 Munich_Light_10L	American	Grain	Base_malt	10	33	39060
+
 Munich_Dark_(Canadian)	Canadian	Grain	Base_malt	32	34	675
+
 Munich_Dark_(German)	German	Grain	Base_malt	16	37	12028
+
 Munich_Light_(Canadian)	Canadian	Grain	Base_malt	10	34	2462
+
 Munich_Light_(German)	German	Grain	Base_malt	6	37	41152
+
 Munich_Malt_(Finnish)	Finland	Grain	Base_malt	7	36	2121
+
 Munich_Malt_(New_Zealander)	New_Zealand	Grain	Base_malt	8	36.8	611
+
 Oat_Malt	United_Kingdom	Grain	Base_malt	2	28	3637
+
 Optic	United_Kingdom	Grain	Base_malt	2	38	682
+
 Organic_Pilsner	New_Zealand	Grain	Base_malt	2	37.9	11
+
 Organic_Pilsner_Malt	Finland	Grain	Base_malt	2	36	151
+
 Pale_2-Row_(American)	American	Grain	Base_malt	2	37	208699
+
 Pale_2-Row_(Canadian)	Canadian	Grain	Base_malt	2	36	14550
+
 Pale_2-Row_(British)	United_Kingdom	Grain	Base_malt	3	38	19801
+
 Pale_2-Row_Toasted	American	Grain	Base_malt	30	33	2121
+
 Pale_6-Row	American	Grain	Base_malt	2	35	8154
+
 Pale_Ale_(American)	American	Grain	Base_malt	4	37	25902
+
 Pale_Ale_(American)	Belgian	Grain	Base_malt	3	38	13851
+
 Pale_Ale_(American)	German	Grain	Base_malt	2	39	24983
+
 Pale_Ale_Malt	Finland	Grain	Base_malt	2	36	4720
+
 Pale_Wheat_(Canadian)	Canadian	Grain	Base_malt	2	36	3287
+
 Pale_Wheat_(German)	German	Grain	Base_malt	2	39	7201
+
 Pearl	United_Kingdom	Grain	Base_malt	2	37	2244
+
 Peated_Malt	United_Kingdom	Grain	Base_malt	3	38	2337
+
 Pilsen	United_Kingdom	Grain	Base_malt	2	36	3207
+
 Pilsner_(American)	American	Grain	Base_malt	2	37	32292
+
 Pilsner_(Belgian)	Belgian	Grain	Base_malt	2	37	32854
+
 Pilsner_(German)	German	Grain	Base_malt	2	38	63649
+
 Pilsner_(Finnish)	Finland	Grain	Base_malt	2	37	3433
+
 Pilsner_(New_Zealander)	New_Zealand	Grain	Base_malt	2	37.3	680
+
 Red_Wheat	American	Grain	Base_malt	3	38	7456
+
 Red_X	German	Grain	Base_malt	12	36	2440
+
 Rye_(American)	American	Grain	Base_malt	4	38	15695
+
 Rye_(German)	German	Grain	Base_malt	4	38	6291
+
 Smoked_Malt_(American)	American	Grain	Base_malt	5	37	4764
+
 Smoked_Malt_(German)	German	Grain	Base_malt	3	37	4685
+
 Sour_Grapes_Malt	New_Zealand	Grain	Base_malt	2	34	146
+
 Spelt_Malt	German	Grain	Base_malt	2	37	1378
+
 Stout_Malt	Ireland	Grain	Base_malt	2	37	415
+
 Vienna_(American)	American	Grain	Base_malt	4	35	27840
+
 Vienna_(German)	German	Grain	Base_malt	4	37	33883
+
 Vienna_(Finnish)	Finland	Grain	Base_malt	3	36	1180
+
 Vienna_(New_Zealander)	New_Zealand	Grain	Base_malt	3	39.1	402
+
 Wheat_(American)	American	Grain	Base_malt	2	38	27676
+
 Wheat_(Belgian)	Belgian	Grain	Base_malt	2	38	8947
+
 Wheat_(British)	United_Kingdom	Grain	Base_malt	2	37	8563
+
 Wheat_(German)	German	Grain	Base_malt	2	37	28256
+
 Wheat_(Finnish)	Finland	Grain	Base_malt	2	38	2584
+
 Wheat_(New_Zealander)	New_Zealand	Grain	Base_malt	2	35.4	790
+
 White_Wheat	American	Grain	Base_malt	3	40	36869
+
 Cara_20L	Belgian	Grain	Crystal_malt	22	34	3901
+
 Cara_45L	Belgian	Grain	Crystal_malt	42	34	3419
+
 Cara_Malt	United_Kingdom	Grain	Crystal_malt	18	35	9808
 Cara_Pale	Finland	Grain	Crystal_malt	4	35	1392
+
 Cara_Plus_100	Finland	Grain	Crystal_malt	38	35	288
+
 Cara_Plus_150	Finland	Grain	Crystal_malt	57	35	373
+
 Cara_Plus_200	Finland	Grain	Crystal_malt	76	35	156
+
 Cara_Plus_250	Finland	Grain	Crystal_malt	94	35	60
+
 CaraAmber	German	Grain	Crystal_malt	23	34	5007
+
 CaraAroma	German	Grain	Crystal_malt	130	34	7697
+
 CaraBelge	German	Grain	Crystal_malt	14	33	1482
+
 CaraBohemian	German	Grain	Crystal_malt	75	33	1511
+
 CaraCrystal_Wheat_Malt	American	Grain	Crystal_malt	55	34	2238
+
 CaraFoam	German	Grain	Crystal_malt	2	37	11323
+
 CaraHell	German	Grain	Crystal_malt	11	34	11240
+
 Caramel_/_Crystal_10L	American	Grain	Crystal_malt	10	35	21678
+
 Caramel_/_Crystal_120L	American	Grain	Crystal_malt	120	33	30628
+
 Caramel_/_Crystal_150L	American	Grain	Crystal_malt	150	33	4362
+
 Caramel_/_Crystal_15L	American	Grain	Crystal_malt	15	35	9223
+
 Caramel_/_Crystal_20L	American	Grain	Crystal_malt	20	35	30304
+
 Caramel_/_Crystal_30L	American	Grain	Crystal_malt	30	34	6682
+
 Caramel_/_Crystal_40L	American	Grain	Crystal_malt	40	34	52926
+
 Caramel_/_Crystal_60L	American	Grain	Crystal_malt	60	34	61188
+
 Caramel_/_Crystal_75L	American	Grain	Crystal_malt	75	33	5800
+
 Caramel_/_Crystal_80L	American	Grain	Crystal_malt	80	33	21599
+
 Caramel_/_Crystal_90L	American	Grain	Crystal_malt	90	33	5213
+
 Caramel_Pils_(Belgian)	Belgian	Grain	Crystal_malt	8	34	5546
+
 Caramel_Pils_(German	German	Grain	Crystal_malt	2	35	4607
+
 Caramel_Wheat	German	Grain	Crystal_malt	46	34	1897
+
 CaraMunich	Belgian	Grain	Crystal_malt	50	33	9964
+
 CaraMunich_I	German	Grain	Crystal_malt	39	34	12196
+
 CaraMunich_II	German	Grain	Crystal_malt	46	34	12974
+
 CaraMunich_III	German	Grain	Crystal_malt	57	34	8891
+
 Carapils	German	Grain	Crystal_malt	1	35	24841
+
 Carapils_(Dextrine_Malt)	American	Grain	Crystal_malt	2	33	69990
+
 CaraRed	German	Grain	Crystal_malt	20	34	12479
+
 CaraRye	German	Grain	Crystal_malt	67	34	101
+
 Carastan_(30/37)	United_Kingdom	Grain	Crystal_malt	34	35	3167
+
 Carastan_Light_(15L)	United_Kingdom	Grain	Crystal_malt	15	35	671
+
 CaraVienne	Belgian	Grain	Crystal_malt	20	34	7392
+
 Crystal_140L	United_Kingdom	Grain	Crystal_malt	140	33	4586
+
 Crystal_15L	United_Kingdom	Grain	Crystal_malt	15	34	3822
+
 Crystal_30L	United_Kingdom	Grain	Crystal_malt	30	34	4883
+
 Crystal_45L	United_Kingdom	Grain	Crystal_malt	45	34	7656
+
 Crystal_50L	United_Kingdom	Grain	Crystal_malt	50	34	4792
+
 Crystal_55L	United_Kingdom	Grain	Crystal_malt	55	34	255
+
 Crystal_60L	United_Kingdom	Grain	Crystal_malt	60	34	15202
+
 Crystal_70L	United_Kingdom	Grain	Crystal_malt	70	34	4957
+
 Crystal_90L	United_Kingdom	Grain	Crystal_malt	90	33	4174
+
 Crystal_Malt_100	Finland	Grain	Crystal_malt	38	35	1256
+
 Crystal_Malt_150	Finland	Grain	Crystal_malt	57	35	1069
+
 Crystal_Malt_250	Finland	Grain	Crystal_malt	94	35	194
+
 Crystal_Malt_300	Finland	Grain	Crystal_malt	113	35	555
 Crystal_Malt_50	Finland	Grain	Crystal_malt	19	35	788
+
 Crystal_Rye	United_Kingdom	Grain	Crystal_malt	90	33	2321
+
 Dark_Crystal_80L	United_Kingdom	Grain	Crystal_malt	80	33	5565
+
 Dark_Crystal_Malt	New_Zealand	Grain	Crystal_malt	96	35.4	375
+
 Dextrine_Malt	United_Kingdom	Grain	Crystal_malt	2	33	2386
+
 Extra_Dark_Crystal_120L	United_Kingdom	Grain	Crystal_malt	120	33	4443
+
 Extra_Dark_Crystal_160L	United_Kingdom	Grain	Crystal_malt	160	33	2651
+
 Light_Crystal_Malt	New_Zealand	Grain	Crystal_malt	32	35.4	607
+
 Medium_Crystal_Malt	New_Zealand	Grain	Crystal_malt	56	35.4	618
+
 Aromatic	Belgian	Grain	Roasted_malt	38	33	12684
+
 Biscuit	Belgian	Grain	Roasted_malt	23	35	23806
+
 Biscuit_Malt	New_Zealand	Grain	Roasted_malt	30	35	418
+
 Black_Barley	American	Grain	Roasted_malt	530	27	3163
+
 Black_Malt_(American)	American	Grain	Roasted_malt	500	28	14708
+
 Black_Malt_(Finnish)	Finland	Grain	Roasted_malt	526	30	756
+
 Black_Patent	United_Kingdom	Grain	Roasted_malt	525	27	15613
+
 Blackprinz	American	Grain	Roasted_malt	500	36	3735
+
 Brown	United_Kingdom	Grain	Roasted_malt	65	32	10697
+
 Brown_Malt	New_Zealand	Grain	Roasted_malt	90	34	288
+
 CaraBrown	American	Grain	Roasted_malt	55	34	1873
+
 Carafa_I	German	Grain	Roasted_malt	340	32	4774
+
 Carafa_II	German	Grain	Roasted_malt	425	32	8198
+
 Carafa_III	German	Grain	Roasted_malt	535	32	10418
+
 Chocolate_(American)	American	Grain	Roasted_malt	350	29	50610
+
 Chocolate_(Belgian)	Belgian	Grain	Roasted_malt	340	30	6394
+
 Chocolate_(British)	United_Kingdom	Grain	Roasted_malt	425	34	26824
+
 Chocolate_Malt	Finland	Grain	Roasted_malt	338	31	2097
+
 Chocolate_Rye	German	Grain	Roasted_malt	240	31	2989
+
 Chocolate_Wheat	German	Grain	Roasted_malt	413	31	3578
+
 Coffee_Malt	United_Kingdom	Grain	Roasted_malt	150	36	2847
+
 Cookie_Malt	Finland	Grain	Roasted_malt	19	37	353
+
 Dark_Ale	Finland	Grain	Roasted_malt	14	35	333
+
 Dark_Chocolate	American	Grain	Roasted_malt	420	29	3974
+
 Dark_Chocolate_Malt	New_Zealand	Grain	Roasted_malt	660	32.7	254
+
 De-Bittered_Black	Belgian	Grain	Roasted_malt	566	34	3229
+
 De-Husked_Caraf_I	German	Grain	Roasted_malt	340	32	1125
+
 De-Husked_Caraf_II	German	Grain	Roasted_malt	418	32	2551
+
 De-Husked_Caraf_III	German	Grain	Roasted_malt	470	32	3494
+
 Light_Chocolate_Malt	New_Zealand	Grain	Roasted_malt	457	32.7	287
+
 Melanoid_Malt	Finland	Grain	Roasted_malt	27	35	974
+
 Melanoidin	German	Grain	Roasted_malt	25	37	21176
+
 Midnight_Wheat_Malt	American	Grain	Roasted_malt	550	33	7134
+
 Pale_Chocolate	United_Kingdom	Grain	Roasted_malt	207	33	13274
+
 Red_Back_Malt	New_Zealand	Grain	Roasted_malt	33	35.4	176
+
 Roast_Barley	New_Zealand	Grain	Roasted_malt	736	32.7	216
 Roasted_Barley	American	Grain	Roasted_malt	300	33	31743
+
 Roasted_Barley_(Belgian)	Belgian	Grain	Roasted_malt	575	30	3292
+
 Roasted_Barley_(British)	United_Kingdom	Grain	Roasted_malt	550	29	18965
+
 Roasted_Wheat	New_Zealand	Grain	Roasted_malt	279	33.6	131
+
 Shepherds_Delight_Malt	New_Zealand	Grain	Roasted_malt	152	36.5	152
+
 Special_B	Belgian	Grain	Roasted_malt	115	34	26716
+
 Special_Roast	American	Grain	Roasted_malt	50	33	6904
+
 Supernova_Malt	New_Zealand	Grain	Roasted_malt	58	37.4	117
+
 Toffee_Malt	New_Zealand	Grain	Roasted_malt	5	38.8	309
+
 Victory	American	Grain	Roasted_malt	28	34	26558

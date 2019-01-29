@@ -2,10 +2,10 @@ Admiral	14.5
 Ahtanum	5.5
 Amarillo	8.6
 Aquila	7
-B._C._Goldings	5
+b_C_Goldings	5
 Banner	10
 Bramling_Cross	6.5
-Brewer’s_Gold	9
+Brewers_Gold	9
 Bullion	7.5
 Cascade	7
 Centennial	7.8
@@ -21,7 +21,6 @@ East_Kent_Goldings	5
 Eroica	12
 First_Gold	7.5
 Fuggles	4.5
-Galaxy	15.6
 Galena	13
 Glacier	5.5
 Goldings	4.5
@@ -36,7 +35,6 @@ Liberty	4
 Lublin	4.5
 Magnum	15
 Millenium	15.5
-Mosaic	12.5
 Mount_Hood	4.8
 Mount_Rainier	6.2
 Motueka	7.0

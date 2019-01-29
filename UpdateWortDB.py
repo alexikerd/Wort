@@ -3,7 +3,7 @@ import pandas as pd
 
 
 
-e = create_engine('mysql://root:$$$W9241739q@localhost:3306/wort')
+e = create_engine('mysql://root:password@localhost:3306/wort')
 conn = e.connect()
 cur = conn.connection.cursor()
 

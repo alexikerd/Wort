@@ -30,22 +30,22 @@ e = create_engine('mysql://root:password@localhost:3306/wort')
 conn = e.connect()
 
 
-mfax = pd.DataFrame(columns=["Malt","PPG","Lovibond","Amount"])
+mdata = pd.DataFrame(columns=["Malt","PPG","Lovibond","Amount"])
 Malt_Finisher = 'y'
 while (Malt_Finisher == 'y'):
 	Recipe_Malt = input("What malt would you like to add?  ")
 	Recipe_Malt_Amount = input("And how many pounds of " + Recipe_Malt + " do you want to use?  ")
-	mfax = mfax.append(pd.read_sql("SELECT Malt, PPG, Lovibond, '" + Recipe_Malt_Amount + "' AS 'Amount' FROM wort.malt where Malt = '" + Recipe_Malt + "'",con=e,index_col=["Malt"]))
+	mdata = mdata.append(pd.read_sql("SELECT Malt, PPG, Lovibond, '" + Recipe_Malt_Amount + "' AS 'Weight' FROM wort.malt where Malt = '" + Recipe_Malt + "'",con=e,index_col=["Malt"]))
 	Malt_Finisher = input("Do you want to add any more malt (y or n)?  ")
+mdata = mdata.convert_objects(convert_numeric=true)
 
-
-hfax = pd.DataFrame(columns=["Hop","AA","Amount","Boil_Time"])
+hdata = pd.DataFrame(columns=["Hop","AA","Amount","Boil_Time"])
 Hop_Finisher = 'y'
 while (Hop_Finisher == 'y'):
 	Recipe_Hop = input("What malt would you like to add?  ")
 	Recipe_Hop_Amount = input("And how many pounds of " + Recipe_Malt + " do you want to use?  ")
 	Hop_Boil_Time = input("And how long will " + Recipe_Hop + " boil for?  ")
-	hfax = hfax.append(pd.read_sql("SELECT Hop, Alpha_Acid '" + Recipe_Hop_Amount + "' AS 'Amount' '" + Hop_Boil_Time + "' FROM wort.hop where Hop = '" + Recipe_Hop + "'",con=e,index_col=["Hop"]))
+	hdata = hdata.append(pd.read_sql("SELECT Hop, Alpha_Acid '" + Recipe_Hop_Amount + "' AS 'Amount' '" + Hop_Boil_Time + "' FROM wort.hop where Hop = '" + Recipe_Hop + "'",con=e,index_col=["Hop"]))
 	Hop_Finisher = input("Do you want to add any more hops (y or n)?  ")
 
 
@@ -54,20 +54,17 @@ while (Hop_Finisher == 'y'):
 
 
 
-# mdt2 = np.dtype([('Malt', 'U32'), ('PPG', 'f8'), ('Lovibond', 'f8'), ('Weight', 'f8')])
-# mdata2 = np.genfromtxt("{}.txt".format(Recipe_Name + "m"), delimiter=None, dtype=mdt2, usecols=(0,1,2,3))
-# maltydata  = np.column_stack((mdata2['Malt'], mdata2['PPG'], mdata2['Lovibond'], mdata2['Weight']))
-# #I begin with using the malt information as its calculations have an impact on the hop calculations.  I reformatted everything to make it much easier to handle.
 
 
 
-# Batch_Volume = input("How many gallons will your batch be?  ")
-# Batch_Volume = float(Batch_Volume)
-# Plato = sum(mdata2['PPG']*mdata2['Weight'])
-# SRM = 1.4922*((sum(mdata2['Weight']*mdata2['Lovibond'])/Batch_Volume)**0.6859)
-# Strike_Volume = 0.3125*(sum(mdata2['Weight']))
-# Volume_Absorbed = 0.125*(sum(mdata2['Weight']))
-# Original_Gravity = 1 + Plato/(1000 * Batch_Volume)
+
+Batch_Volume = input("How many gallons will your batch be?  ")
+Batch_Volume = float(Batch_Volume)
+Plato = sum(mdata2['PPG']*mdata2['Weight'])
+SRM = 1.4922*((sum(mdata2['Weight']*mdata2['Lovibond'])/Batch_Volume)**0.6859)
+Strike_Volume = 0.3125*(sum(mdata2['Weight']))
+Volume_Absorbed = 0.125*(sum(mdata2['Weight']))
+Original_Gravity = 1 + Plato/(1000 * Batch_Volume)
 
 # #There are three imporant parts of the malt calculations.  There are volume calculations (of which there are2 very important ones), the gravity, and color.  Gravity is much more easily tracked with
 # #the value 'Plato' as the actual specific gravity changes along with the volume (just look at the formula for Original_Gravity).  Essentially as water boils away the actual particles/sugar of the wort

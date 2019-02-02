@@ -9,7 +9,8 @@ from os import path
 
 #Make sure to make it so the path is actually correct bucko
 
-Beer_Recipes_Path = path.abspath(path.curdir)
+Beer_Recipes_Path = path.abspath(path.curdir) + "\Beer Recipes"
+print(Beer_Recipes_Path)
 Recipe_Name = input("Hi, welcome to Wuerze.  What would you like to name your beer recipe?  ")
 if path.exists(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name))):
 	Repeat_Name = input("I'm sorry, you already have a beer recipe with this name, would you like to overwrite it (y or n)?  ")
@@ -24,13 +25,12 @@ if path.exists(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name))):
 curdurpath = path.abspath(path.curdir)
 
 f= open(os.path.join(Beer_Recipes_Path, "{}.txt".format(Recipe_Name)),"w+")
-m= open("{}.txt".format(Recipe_Name + "m"),"w+")
-h= open("{}.txt".format(Recipe_Name + "h"),"w+")
+
 e = create_engine('mysql://root:password@localhost:3306/wort')
 conn = e.connect()
 
 
-mdata = pd.DataFrame(columns=["Malt","PPG","Lovibond","Amount"])
+mdata = pd.DataFrame(columns=["PPG","Lovibond","Weight"])
 Malt_Finisher = 'y'
 while (Malt_Finisher == 'y'):
 	Recipe_Malt = input("What malt would you like to add?  ")
@@ -39,13 +39,13 @@ while (Malt_Finisher == 'y'):
 	Malt_Finisher = input("Do you want to add any more malt (y or n)?  ")
 mdata = mdata.convert_objects(convert_numeric=true)
 
-hdata = pd.DataFrame(columns=["Hop","AA","Amount","Boil_Time"])
+hdata = pd.DataFrame(columns=["Alpha Acid","Weight","Boil Time"])
 Hop_Finisher = 'y'
 while (Hop_Finisher == 'y'):
-	Recipe_Hop = input("What malt would you like to add?  ")
-	Recipe_Hop_Amount = input("And how many pounds of " + Recipe_Malt + " do you want to use?  ")
+	Recipe_Hop = input("What hop would you like to add?  ")
+	Recipe_Hop_Amount = input("And how many ounces of " + Recipe_Hop + " do you want to use?  ")
 	Hop_Boil_Time = input("And how long will " + Recipe_Hop + " boil for?  ")
-	hdata = hdata.append(pd.read_sql("SELECT Hop, Alpha_Acid '" + Recipe_Hop_Amount + "' AS 'Amount' '" + Hop_Boil_Time + "' FROM wort.hop where Hop = '" + Recipe_Hop + "'",con=e,index_col=["Hop"]))
+	hdata = hdata.append(pd.read_sql("SELECT Hop, Alpha_Acid AS 'Alpha Acid', '" + Recipe_Hop_Amount + "' AS 'Weight', '" + Hop_Boil_Time + "' AS 'Boil Time' FROM wort.hop where Hop = '" + Recipe_Hop + "'",con=e,index_col=["Hop"]))
 	Hop_Finisher = input("Do you want to add any more hops (y or n)?  ")
 hdata=hdata.convert_objects(convert_numeric=true)
 
@@ -60,20 +60,20 @@ hdata=hdata.convert_objects(convert_numeric=true)
 
 Batch_Volume = input("How many gallons will your batch be?  ")
 Batch_Volume = float(Batch_Volume)
-Plato = sum(mdata2['PPG']*mdata2['Weight'])
-SRM = 1.4922*((sum(mdata2['Weight']*mdata2['Lovibond'])/Batch_Volume)**0.6859)
-Strike_Volume = 0.3125*(sum(mdata2['Weight']))
-Volume_Absorbed = 0.125*(sum(mdata2['Weight']))
+Plato = sum(mdata["PPG"]*mdata["Weight"])
+SRM = 1.4922*((sum(mdata["Weight"]*mdata["Lovibond"])/Batch_Volume)**0.6859)
+Strike_Volume = 0.3125*(sum(mdata["Weight"]))
+Volume_Absorbed = 0.125*(sum(mdata["Weight"]))
 Original_Gravity = 1 + Plato/(1000 * Batch_Volume)
 
-# #There are three imporant parts of the malt calculations.  There are volume calculations (of which there are2 very important ones), the gravity, and color.  Gravity is much more easily tracked with
-# #the value 'Plato' as the actual specific gravity changes along with the volume (just look at the formula for Original_Gravity).  Essentially as water boils away the actual particles/sugar of the wort
-# #that came from the malt do not boil away, so the total amount remains constant.  Color, or SRM is the exact same way.  Volume calculations are significantly more difficult as volume is lost through
-# #a number of processes.  We have the initial amount of water that the malt is added to (Strike Volume), grain absorbs some of this away but we then pour more water through the grain to increase mash
-# #efficiency (Sparge Volume).  Wort is then boiled away and what remains needs to be the desired batch volume.  Volume lost due to absorption can be calculated by pure weight of the grain.  This is a
-# #good enough estimate as barley behaves as barley for the most part and finding a very accurate method accounting for how dry the barley is would be incredibly tedious.  So I will stick with an estimate
-# #for volume absorbed.  When it comes to Strike Volume, there is a desired grain to water ratio so simply by knowing how much grain we can find the initial volume.  We know the end volume result and once
-# #we know how much will be boiled away we can solve for Sparge Volume.
+#There are three imporant parts of the malt calculations.  There are volume calculations (of which there are2 very important ones), the gravity, and color.  Gravity is much more easily tracked with
+#the value 'Plato' as the actual specific gravity changes along with the volume (just look at the formula for Original_Gravity).  Essentially as water boils away the actual particles/sugar of the wort
+#that came from the malt do not boil away, so the total amount remains constant.  Color, or SRM is the exact same way.  Volume calculations are significantly more difficult as volume is lost through
+#a number of processes.  We have the initial amount of water that the malt is added to (Strike Volume), grain absorbs some of this away but we then pour more water through the grain to increase mash
+#efficiency (Sparge Volume).  Wort is then boiled away and what remains needs to be the desired batch volume.  Volume lost due to absorption can be calculated by pure weight of the grain.  This is a
+#good enough estimate as barley behaves as barley for the most part and finding a very accurate method accounting for how dry the barley is would be incredibly tedious.  So I will stick with an estimate
+#for volume absorbed.  When it comes to Strike Volume, there is a desired grain to water ratio so simply by knowing how much grain we can find the initial volume.  We know the end volume result and once
+#we know how much will be boiled away we can solve for Sparge Volume.
 
 
 # Boil_Time = float(input("How long will the boil last for?  "))

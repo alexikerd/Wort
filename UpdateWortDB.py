@@ -9,9 +9,9 @@ conn = e.connect()
 cur = conn.connection.cursor()
 
 
-mdata = pd.read_csv(Wort_Path + r"\Malt.txt", delimiter='	', names = ["Malt", "Country", "Ingredient Type", "Malt Type", "PPG", "Lovibond", "Irrelevant"])
+mdata = pd.read_csv(Wort_Path + r"\Malt.txt", delimiter='	', names = ["Malt", "PPG", "Lovibond"],usecols=(0,4,5))
 cur.execute("DROP TABLE IF EXISTS malt")
-mdata.to_sql(name='malt',con=e)
+mdata.to_sql(name='malt',con=e,dtype={"Malt": String(32), "PPG": Float, "Lovibond": Float})
 
 hdata = pd.read_csv(Wort_Path + r"\Hop.txt", delimiter='	', names = ["Hop", "Alpha_Acid"])
 cur.execute("DROP TABLE IF EXISTS hop")

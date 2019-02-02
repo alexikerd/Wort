@@ -15,7 +15,7 @@ mdata.to_sql(name='malt',con=e,dtype={"Malt": String(32), "PPG": Float, "Lovibon
 
 hdata = pd.read_csv(Wort_Path + r"\Hop.txt", delimiter='	', names = ["Hop", "Alpha_Acid"])
 cur.execute("DROP TABLE IF EXISTS hop")
-hdata.to_sql(name='hop',con=e)
+hdata.to_sql(name='hop',con=e,dtype={"Hop": String(32), "Alpha_Acid": Float})
 
 
 

@@ -47,7 +47,7 @@ while (Hop_Finisher == 'y'):
 	Hop_Boil_Time = input("And how long will " + Recipe_Hop + " boil for?  ")
 	hdata = hdata.append(pd.read_sql("SELECT Hop, Alpha_Acid '" + Recipe_Hop_Amount + "' AS 'Amount' '" + Hop_Boil_Time + "' FROM wort.hop where Hop = '" + Recipe_Hop + "'",con=e,index_col=["Hop"]))
 	Hop_Finisher = input("Do you want to add any more hops (y or n)?  ")
-
+hdata=hdata.convert_objects(convert_numeric=true)
 
 
 #The files created earlier are populated with important information from the user involving the recipe as well as the relevant information for each ingredient in a usable format.  The database then is closed since it is no longer needed.

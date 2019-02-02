@@ -7,7 +7,7 @@ import math as math
 import os
 from os import path
 
-
+#Make sure to make it so the path is actually correct bucko
 
 Beer_Recipes_Path = path.abspath(path.curdir)
 Recipe_Name = input("Hi, welcome to Wuerze.  What would you like to name your beer recipe?  ")
@@ -30,30 +30,25 @@ e = create_engine('mysql://root:password@localhost:3306/wort')
 conn = e.connect()
 
 
-
-
+mfax = pd.DataFrame(columns=["Malt","PPG","Lovibond","Amount"])
 Malt_Finisher = 'y'
 while (Malt_Finisher == 'y'):
 	Recipe_Malt = input("What malt would you like to add?  ")
 	Recipe_Malt_Amount = input("And how many pounds of " + Recipe_Malt + " do you want to use?  ")
-	cur.execute('SELECT Malt, PPG, Lovibond FROM malt WHERE Malt = %s', [Recipe_Malt])
-	for row in cur:
-		m.write('{}	{}	{}	{}\n'.format(row[0], row[1], row[2], Recipe_Malt_Amount))
+	mfax = mfax.append(pd.read_sql("SELECT Malt, PPG, Lovibond, '" + Recipe_Malt_Amount + "' AS 'Amount' FROM wort.malt where Malt = '" + Recipe_Malt + "'",con=e,index_col=["Malt"]))
 	Malt_Finisher = input("Do you want to add any more malt (y or n)?  ")
-m.close()
 
+
+hfax = pd.DataFrame(columns=["Hop","AA","Amount","Boil_Time"])
 Hop_Finisher = 'y'
 while (Hop_Finisher == 'y'):
-	Recipe_Hop = input("What hop would you like to add?  ")
-	Recipe_Hop_Amount = input("And how many ounces of " + Recipe_Hop + " do you want to use?  ")
-	Recipe_Hop_Boil = input("How many minutes will you boil " + Recipe_Hop + " for?  ")
-	cur.execute('SELECT Hop, Alpha_Acid FROM hop WHERE Hop = %s', [Recipe_Hop])
-	for row in cur:
-		h.write('{}	{}	{}	{}\n'.format(row[0], row[1], Recipe_Hop_Amount, Recipe_Hop_Boil))
+	Recipe_Hop = input("What malt would you like to add?  ")
+	Recipe_Hop_Amount = input("And how many pounds of " + Recipe_Malt + " do you want to use?  ")
+	Hop_Boil_Time = input("And how long will " + Recipe_Hop + " boil for?  ")
+	hfax = hfax.append(pd.read_sql("SELECT Hop, Alpha_Acid '" + Recipe_Hop_Amount + "' AS 'Amount' '" + Hop_Boil_Time + "' FROM wort.hop where Hop = '" + Recipe_Hop + "'",con=e,index_col=["Hop"]))
 	Hop_Finisher = input("Do you want to add any more hops (y or n)?  ")
-h.close()
 
-cur.close()
+
 
 #The files created earlier are populated with important information from the user involving the recipe as well as the relevant information for each ingredient in a usable format.  The database then is closed since it is no longer needed.
 

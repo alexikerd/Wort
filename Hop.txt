@@ -2,7 +2,7 @@ Admiral	14.5
 Ahtanum	5.5
 Amarillo	8.6
 Aquila	7
-b_C_Goldings	5
+B_C_Goldings	5
 Banner	10
 Bramling_Cross	6.5
 Brewers_Gold	9

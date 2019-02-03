@@ -76,17 +76,21 @@ Original_Gravity = 1 + Plato/(1000 * Batch_Volume)
 #we know how much will be boiled away we can solve for Sparge Volume.
 
 
-# Boil_Time = float(input("How long will the boil last for?  "))
-# bdt = np.dtype([('Capacity_Volume', 'f8'), ('Boil_Volume', 'f8'), ('Final_Volume', 'f8'), ('Radius_Squared', 'f8'), ('Gravity', 'f8')])
-# bdata = np.genfromtxt('Boil_Experiment.txt', delimiter=None, dtype=bdt, usecols=(0,1,2,3,4), skip_header= 1)
-# boildata  = np.column_stack((bdata['Capacity_Volume'], 3.78541 * (bdata['Boil_Volume'] - bdata['Final_Volume']) / bdata['Radius_Squared'], bdata['Gravity'], bdata['Radius_Squared']))
-# boilstats = sp.stats.linregress(boildata[:,2], boildata[:,1])
-# Capacity = float(input("What's the volume capacity of the pot you'll be using to boil?  "))
-# brewdata = boildata[np.logical_not(boildata[:,0] != Capacity)]
-# Volume_Boiled = (boilstats[0] * Original_Gravity + boilstats[1]) * brewdata[0,3] * (Boil_Time/60) / 3.78541 
-# Sparge_Volume = Batch_Volume + Volume_Boiled - Strike_Volume + Volume_Absorbed
-# Volume_Preboil = Batch_Volume + Volume_Boiled
-# Initial_Gravity = 1 + Plato/(1000 * Volume_Preboil)
+Boil_Time = float(input("How long will the boil last for?  "))
+Capacity = float(input("What's the volume capacity of the pot you'll be using to boil?  "))
+
+bdata = pd.read_csv(Wort_Path + r"\Boil.txt", delimiter='	', header='infer')
+bstats = sp.stats.linregress(bdata["Radius_Squared"],(bdata["Boil_Volume"]-bdata["Final_Volume"])/bdata["Gravity"])
+Volume_Boiled = (bstats[0] * Original_Gravity + bstats[1]) * (Boil_Time/60) *  / 3.78541
+
+
+
+bbdata = bdata["Radius_Squared"].loc[bdata["Capacity_Volume"] == Capacity]
+brewdata = boildata[np.logical_not(boildata[:,0] != Capacity)]
+Volume_Boiled = (boilstats[0] * Original_Gravity + boilstats[1]) * brewdata[0,3] * (Boil_Time/60) * bdata.iloc[0] / 3.78541 
+Sparge_Volume = Batch_Volume + Volume_Boiled - Strike_Volume + Volume_Absorbed
+Volume_Preboil = Batch_Volume + Volume_Boiled
+Initial_Gravity = 1 + Plato/(1000 * Volume_Preboil)
 
 # #There are many small factors that affect the boil off rate that are specific to each brewing setup.  These are too small to realistically measure and determine, but they will be the same
 # #each time I brew as it is the same set up.  The boil off rate is proportional to the surface area of the pot, temperature, and enthalpy of vaporization of the wort.  I've conducted some experiments
@@ -96,52 +100,48 @@ Original_Gravity = 1 + Plato/(1000 * Batch_Volume)
 
 
 
-# hdt2 = np.dtype([('Hop', 'U32'), ('AA', 'f8'), ('Weight', 'f8'), ('Boil_Time', 'f8')])
-# hdata2 = np.genfromtxt("{}.txt".format(Recipe_Name + "h"), delimiter=None, dtype=hdt2, usecols=(0,1,2,3))
-# hoppydata  = np.column_stack((hdata2['AA']/100, hdata2['Weight'] , hdata2['Boil_Time']))
-# IBU = sum((1.65 * 0.000125**(Plato/(1000 * Batch_Volume))) * ((1 - np.exp(-0.04 * hoppydata[:,2]))/4.15) * (hoppydata[:,0]*hoppydata[:,1]*7490/(Batch_Volume)))
+IBU = sum((1.65 * 0.000125**(Plato/(1000 * Batch_Volume))) * ((1 - np.exp(-0.04 * hdata["Boil_Time"]))/4.15) * (hdata["Weight"]*hdata["Alpha Acid"]*74.9/(Batch_Volume)))
 
 # #hop calculations are significantly easier as all I had to do was determine the IBU using the Tinseth equation.
 
 
 
-# f.write('{}		{} gallons\n'.format(Recipe_Name, Batch_Volume))
-# f.write('\nOG:	{}\n'.format(Original_Gravity))
-# f.write('IBU:	{}\n'.format(IBU))
-# if SRM < 2:
-# 	f.write('Color:	Pale Straw ({})\n'.format(SRM))
-# if SRM > 2 and SRM <= 3:
-# 	f.write('Color:	Straw ({})\n'.format(SRM))
-# if SRM > 3 and SRM <= 4:
-# 	f.write('Color:	Pale Gold ({})\n'.format(SRM))
-# if SRM > 4 and SRM <= 6:
-# 	f.write('Color:	Deep Gold ({})\n'.format(SRM))
-# if SRM > 6 and SRM <= 9:
-# 	f.write('Color:	Pale Amber ({})\n'.format(SRM))
-# if SRM > 9 and SRM <= 12:
-# 	f.write('Color:	Medium Amber ({})\n'.format(SRM))
-# if SRM > 12 and SRM <= 15:
-# 	f.write('Color:	Deep Amber ({})\n'.format(SRM))
-# if SRM > 15 and SRM <= 18:
-# 	f.write('Color:	Amber-Brown ({})\n'.format(SRM))
-# if SRM > 18 and SRM <= 20:
-# 	f.write('Color:	Brown ({})\n'.format(SRM))
-# if SRM > 20 and SRM <= 24:
-# 	f.write('Color:	Ruby Brown ({})\n'.format(SRM))
-# if SRM > 24 and SRM <= 30:
-# 	f.write('Color:	Deep Brown ({})\n'.format(SRM))
-# if SRM > 30:
-# 	f.write('Color:	Black ({})\n'.format(SRM))
-# f.write('Strike Volume:	{}\n'.format(Strike_Volume))
-# f.write('Sparge Volume:	{}\n'.format(Sparge_Volume))
-# f.write('\nMalt				Amount\n')
-# for row in maltydata:
-# 	f.write("{}				{}\n".format(row[0], row[3]))
-# f.write('\nHop				Amount				Boil Time')
-# for row in hdata2:
-# 	f.write("\n{}				{}				{}".format(row[0], row[2], row[3]))
-# f.close()
-# os.remove("{}.txt".format(Recipe_Name + "m"))
-# os.remove("{}.txt".format(Recipe_Name + "h"))
+f.write('{}		{} gallons\n'.format(Recipe_Name, Batch_Volume))
+f.write('\nOG:	{}\n'.format(Original_Gravity))
+f.write('IBU:	{}\n'.format(IBU))
+if SRM < 2:
+	f.write("Color:	Pale Straw ({})\n".format(SRM))
+if SRM > 2 and SRM <= 3:
+	f.write("Color:	Straw ({})\n".format(SRM))
+if SRM > 3 and SRM <= 4:
+	f.write("Color:	Pale Gold ({})\n".format(SRM))
+if SRM > 4 and SRM <= 6:
+	f.write("Color:	Deep Gold ({})\n".format(SRM))
+if SRM > 6 and SRM <= 9:
+	f.write("Color:	Pale Amber ({})\n".format(SRM))
+if SRM > 9 and SRM <= 12:
+	f.write("Color:	Medium Amber ({})\n".format(SRM))
+if SRM > 12 and SRM <= 15:
+	f.write("Color:	Deep Amber ({})\n".format(SRM))
+if SRM > 15 and SRM <= 18:
+	f.write("Color:	Amber-Brown ({})\n".format(SRM))
+if SRM > 18 and SRM <= 20:
+	f.write("Color:	Brown ({})\n".format(SRM))
+if SRM > 20 and SRM <= 24:
+	f.write("Color:	Ruby Brown ({})\n".format(SRM))
+if SRM > 24 and SRM <= 30:
+	f.write("Color:	Deep Brown ({})\n".format(SRM))
+if SRM > 30:
+	f.write('Color:	Black ({})\n'.format(SRM))
+f.write("Strike Volume:	{}\n".format(Strike_Volume))
+f.write("Sparge Volume:	{}\n".format(Sparge_Volume))
+f.write("\nMalt				Amount\n")
+for row in maltydata:
+	f.write("{}				{}\n".format(row[0], row[3]))
+f.write("\nHop				Amount				Boil Time")
+for row in hdata2:
+	f.write("\n{}				{}				{}".format(row[0], row[2], row[3]))
+f.close()
 
-# #Also relatively straightforward, I write out the recipe into a very readable format and get rid of the two assistant text files required for calculations.
+
+#Also relatively straightforward, I write out the recipe into a very readable format and get rid of the two assistant text files required for calculations.
